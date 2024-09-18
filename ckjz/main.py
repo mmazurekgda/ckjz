@@ -1,12 +1,7 @@
-from typing import Union
-
 from fastapi import FastAPI
 
 from ckjz import __version__
-
-from ckjz.models.toilet import ToiletPublic, Toilet
-from ckjz.engine import engine
-from sqlmodel import Session, select
+from ckjz.api import router as api_router
 
 app = FastAPI(
     title="CKJZ",
@@ -14,19 +9,8 @@ app = FastAPI(
     version=__version__,
 )
 
+app.include_router(api_router)
 
-@app.get("/toilets", response_model=list[ToiletPublic])
-def display_toilets():
-    with Session(engine) as session:
-        toilets = session.exec(select(Toilet)).all()
-        return toilets
-
-
-@app.get("/toilets/{toilet_name}", response_model=ToiletPublic)
-def display_toilet(toilet_name: str):
-    with Session(engine) as session:
-        toilet = session.exec(select(Toilet).where(Toilet.name == toilet_name)).first()
-        return toilet
 
 
 # @app.get("/healthz/{toilet_id}")
