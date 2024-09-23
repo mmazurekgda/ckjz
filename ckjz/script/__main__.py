@@ -58,13 +58,14 @@ def test(ip, port, interval, **kwargs):
 def run(ip, port, interval, **kwargs):
     logger = logging.getLogger(__name__)
     logger.info(f"Starting run with interval {interval}")
+    if not any(kwargs.values()):
+        logger.error("No pins provided!")
+        exit(1)
+    for name, pin in kwargs.items():
+        logger.info(f"Setting up pin `{pin}` for `{name}`")
+        GPIO.setup(pin, GPIO.IN)
     while True:
-        if not any(kwargs.values()):
-            logger.error("No pins provided!")
-            exit(1)
         for name, pin in kwargs.items():
-            if pin is None:
-                continue
             logger.info(f"Reading pin `{pin}` for `{name}`")
             status = GPIO.input(pin)
             logger.info(f"Updating `{name}` with status `{status}`")
