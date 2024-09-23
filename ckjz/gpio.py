@@ -1,5 +1,6 @@
 import os
 from threading import Lock
+import time
 
 _export_lock = Lock()
 _open_pins = {}
@@ -27,6 +28,7 @@ class GPIOPin(object):
                     f.write(str(self.pin))
                     f.flush()
 
+        time.sleep(0.1)  # Give udev time to set permissions
         self.value = open(os.path.join(self.root, 'value'), 'wb+', buffering=0)
 
         self.setup(direction, initial, active_low)
