@@ -63,6 +63,8 @@ def run(ip, port, interval, **kwargs):
         exit(1)
     while True:
         for name, pin in kwargs.items():
+            if pin is None:
+                continue
             logger.info(f"Reading pin `{pin}` for `{name}`")
             status = GPIOPin(pin, direction=IN).read(pin)
             logger.info(f"Updating `{name}` with status `{status}`")
