@@ -2,9 +2,9 @@ import requests
 import random
 import time
 import click
-import gpio as GPIO
 import logging
 from ckjz.constants import TOILET_TYPE
+from ckjz.gpio import GPIOPin, IN
 
 
 def update(name: TOILET_TYPE, status: bool, ip: str, port: int):
@@ -61,13 +61,10 @@ def run(ip, port, interval, **kwargs):
     if not any(kwargs.values()):
         logger.error("No pins provided!")
         exit(1)
-    for name, pin in kwargs.items():
-        logger.info(f"Setting up pin `{pin}` for `{name}`")
-        GPIO.setup(pin, GPIO.IN)
     while True:
         for name, pin in kwargs.items():
             logger.info(f"Reading pin `{pin}` for `{name}`")
-            status = GPIO.input(pin)
+            status = GPIOPin(pin, direction=IN).read(pin)
             logger.info(f"Updating `{name}` with status `{status}`")
             update(name, status, ip, port)
             logger.info(f"Updated `{name}` with status `{status}`")
