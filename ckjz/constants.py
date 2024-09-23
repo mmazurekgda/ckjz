@@ -1,7 +1,7 @@
 import enum
 
 
-class TOILET_TYPES(enum.Enum):
+class TOILET_TYPE(enum.Enum):
     UM1 = "UM1"
     UM2 = "UM2"
     UL1 = "UL1"
@@ -13,40 +13,40 @@ class TOILET_TYPES(enum.Enum):
 TOILETS = {
     # upper floor, men's room,
     # accessible from  the open space
-    TOILET_TYPES.UM1: {
+    TOILET_TYPE.UM1: {
         "upper_floor": True,
         "ladies": False,
         "name": "UM1",
     },
     # upper floor, men's room,
     # accessible from the conference rooms
-    TOILET_TYPES.UM2: {
+    TOILET_TYPE.UM2: {
         "upper_floor": True,
         "ladies": False,
         "name": "UM2",
     },
     # upper floor, ladies' room,
     # accessible from the open space
-    TOILET_TYPES.UL1: {
+    TOILET_TYPE.UL1: {
         "upper_floor": True,
         "ladies": True,
         "name": "UL1",
     },
     # upper floor, ladies' room,
     # accessible from the conference rooms
-    TOILET_TYPES.UL2: {
+    TOILET_TYPE.UL2: {
         "upper_floor": True,
         "ladies": True,
         "name": "UL2",
     },
     # ground floor, men's room
-    TOILET_TYPES.GM: {
+    TOILET_TYPE.GM: {
         "upper_floor": False,
         "ladies": False,
         "name": "GM",
     },
     # ground floor, ladies' room
-    TOILET_TYPES.GL: {
+    TOILET_TYPE.GL: {
         "upper_floor": False,
         "ladies": True,
         "name": "GL",

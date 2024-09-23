@@ -1,5 +1,5 @@
 from nicegui import ui
-from ckjz.costants import TOILET_TYPES, COLORS, FAINT_COLORS
+from ckjz.constants import TOILET_TYPE, COLORS, FAINT_COLORS
 
 
 JS_SCRIPT = f"""
@@ -46,22 +46,22 @@ COLUMN_STYLE = 'flex: 1; margin: auto; width: 100%; margin-left: 2%; margin-righ
 
 ORIGIN = (-28, 0)
 POLYGON_U_COORDINDATES = {
-    TOILET_TYPES.UL2: [[0.0, 0.0], [56.0, 0.0], [56.0, 58.0], [43.0, 58.0], [43.0, 68.0], [0.0, 68.0]],
-    TOILET_TYPES.UM2: [[56.0, 0.0], [92.0, 0.0], [92.0, 58.0], [56.0, 58.0]],
-    TOILET_TYPES.UL1: [[92.0, 0.0], [132.0, 0.0], [132.0, 58.0], [92.0, 58.0]],
-    TOILET_TYPES.UM1: [[0.0, 68.0], [43.0, 68.0], [43.0, 58.0], [78.0, 58.0], [78.0, 86.0], [0.0, 86.0]],
+    TOILET_TYPE.UL2: [[0.0, 0.0], [56.0, 0.0], [56.0, 58.0], [43.0, 58.0], [43.0, 68.0], [0.0, 68.0]],
+    TOILET_TYPE.UM2: [[56.0, 0.0], [92.0, 0.0], [92.0, 58.0], [56.0, 58.0]],
+    TOILET_TYPE.UL1: [[92.0, 0.0], [132.0, 0.0], [132.0, 58.0], [92.0, 58.0]],
+    TOILET_TYPE.UM1: [[0.0, 68.0], [43.0, 68.0], [43.0, 58.0], [78.0, 58.0], [78.0, 86.0], [0.0, 86.0]],
 }
 POLYGON_G_COORDINDATES = {
-    TOILET_TYPES.GL: [[15.0, 3.0], [49.0, 3.0], [49.0, 56.0], [15.0, 56.0]],
-    TOILET_TYPES.GM: [[49.0, 3.0], [83.0, 3.0], [83.0, 56.0], [49.0, 56.0]],
+    TOILET_TYPE.GL: [[15.0, 3.0], [49.0, 3.0], [49.0, 56.0], [15.0, 56.0]],
+    TOILET_TYPE.GM: [[49.0, 3.0], [83.0, 3.0], [83.0, 56.0], [49.0, 56.0]],
 }
 SHAPES_CENTROIDS = {
-    TOILET_TYPES.UL2: [27.5, 25.0],
-    TOILET_TYPES.UM2: [75.0, 26.0],
-    TOILET_TYPES.UL1: [113.0, 25.0],
-    TOILET_TYPES.UM1: [59.0, 70.0],
-    TOILET_TYPES.GL: [32.5, 25.0],
-    TOILET_TYPES.GM: [66.5, 25.0],
+    TOILET_TYPE.UL2: [27.5, 25.0],
+    TOILET_TYPE.UM2: [75.0, 26.0],
+    TOILET_TYPE.UL1: [113.0, 25.0],
+    TOILET_TYPE.UM1: [59.0, 70.0],
+    TOILET_TYPE.GL: [32.5, 25.0],
+    TOILET_TYPE.GM: [66.5, 25.0],
 }
 
 def u_coordinates_to_str(coordinates: list[list[float]]) -> str:
@@ -70,11 +70,11 @@ def u_coordinates_to_str(coordinates: list[list[float]]) -> str:
 def g_coordinates_to_str(coordinates: list[list[float]]) -> str:
     return ' '.join([f'{c[0]},{c[1]}' for c in coordinates])
 
-def get_shape(name: TOILET_TYPES) -> str:
+def get_shape(name: TOILET_TYPE) -> str:
     style = 'fill: rgba(230, 230, 230, 0.0); stroke: green; stroke-width: 1.2;'
     x: float = SHAPES_CENTROIDS[name][0] + (ORIGIN[0] if name in POLYGON_U_COORDINDATES else 0)
     y: float = SHAPES_CENTROIDS[name][1]
-    if name in [TOILET_TYPES.UL2, TOILET_TYPES.UL1, TOILET_TYPES.GL]:
+    if name in [TOILET_TYPE.UL2, TOILET_TYPE.UL1, TOILET_TYPE.GL]:
         # draw a circle
         radius: float = 3
         return f'<circle id="shape-{name.value}" cx="{x}" cy="{y}" r="{radius}" style="{style}" />'

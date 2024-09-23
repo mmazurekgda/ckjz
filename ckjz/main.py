@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
 from ckjz.models.toilet import Toilet
 from ckjz.engine import engine
-from ckjz.costants import WS_STATUSES, TIME_DELTA_WATCHDOG, TIME_DELTA_UPDATES
+from ckjz.constants import WS_STATUSES, TIME_DELTA_WATCHDOG, TIME_DELTA_UPDATES
 from ckjz import __version__
 from ckjz.api import router as api_router
 from ckjz.frontend import ui
