@@ -7,8 +7,8 @@ from ckjz.constants import TOILET_TYPE
 from ckjz.gpio import GPIOPin, IN
 
 
-def update(name: TOILET_TYPE, status: bool, ip: str, port: int):
-    url = f'http://{ip}:{port}/toilets/{name.value}'
+def update(name: str, status: bool, ip: str, port: int):
+    url = f'http://{ip}:{port}/toilets/{name}'
     response = requests.post(
         url,
         params={'status': status},
@@ -46,7 +46,7 @@ def test(ip, port, interval, **kwargs):
             time.sleep(interval)
             logger.info(f"Updating `{name}`")
             status = random.choice([True, False])
-            update(name, status, ip, port)
+            update(name.value, status, ip, port)
             logger.info(f"Updated `{name}` with status `{status}`")
 
 
@@ -66,7 +66,7 @@ def run(ip, port, interval, **kwargs):
             if pin is None:
                 continue
             logger.info(f"Reading pin `{pin}` for `{name}`")
-            status = GPIOPin(pin=pin, direction=IN).read(pin)
+            status = GPIOPin(pin=pin, direction=IN).read()
             logger.info(f"Updating `{name}` with status `{status}`")
             update(name, status, ip, port)
             logger.info(f"Updated `{name}` with status `{status}`")
