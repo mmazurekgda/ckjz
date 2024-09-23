@@ -14,8 +14,8 @@ LOW, HIGH = 0, 1
 
 class GPIOPin(object):
     def __init__(self, pin, direction=None, initial=LOW, active_low=None):
-        if pin := GPIOPin.configured(pin):
-            return pin
+        if ready_pin := GPIOPin.configured(pin):
+            return ready_pin
 
         self.value = None
         self.pin = int(pin)
