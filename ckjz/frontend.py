@@ -96,12 +96,12 @@ def get_shape(name: TOILET_TYPE) -> str:
 def show():
     ui.add_head_html(HTML_CODE)
     with ui.row().style('margin: auto; margin-top: 2%; margin-bottom: 4%;'):
-        ui.label('Czy kibel jest zajęty?').classes('text-9xl').style(TEXT_STYLE)
+        ui.label('Is the kibel occupied?').classes('text-9xl').style(TEXT_STYLE)
     with ui.row().style(ROW_STYLE):
         with ui.column().classes('items-center').style(COLUMN_STYLE):
-            ui.label('Parter').classes('text-8xl').style(TEXT_STYLE)
+            ui.label('Ground floor').classes('text-8xl').style(TEXT_STYLE)
         with ui.column().classes('items-center').style(COLUMN_STYLE):
-            ui.label('1 piętro').classes('text-8xl').style(TEXT_STYLE)
+            ui.label('First floor').classes('text-8xl').style(TEXT_STYLE)
 
     with ui.row().style(ROW_STYLE):
         for image, coordinates_set in [
@@ -126,9 +126,8 @@ def show():
                         '</svg>'
                     </div>
                 ''')
-    # legend
     with ui.row().style('margin-left: auto; width: 10%; margin-top: 4%;'):
-        ui.label('Legenda').classes('text-5xl').style(TEXT_STYLE)
+        ui.label('Legend').classes('text-5xl').style(TEXT_STYLE)
     for status, color in COLORS.items():
         with ui.row().style('margin-left: auto; width: 10%;'):
             ui.label(status).style(f'color: {color}; font-size: 2em;')
