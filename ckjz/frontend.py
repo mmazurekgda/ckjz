@@ -5,7 +5,7 @@ from ckjz.constants import TOILET_TYPE, COLORS, FAINT_COLORS
 JS_SCRIPT = f"""
 <script>
 
-const ws = new WebSocket("ws://localhost:3001/ws");
+const ws = new WebSocket(`${{window.location.protocol === 'https:' ? 'wss' : 'ws'}}://${{window.location.host}}/ws`);
 
 ws.onmessage = function(event) {{
     const status = JSON.parse(event.data);
