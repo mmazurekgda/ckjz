@@ -3,7 +3,6 @@ from threading import Lock
 import time
 
 _export_lock = Lock()
-_open_pins = {}
 
 GPIO_ROOT = "/sys/class/gpio"
 GPIO_EXPORT = os.path.join(GPIO_ROOT, "export")
@@ -13,11 +12,20 @@ IN, OUT = "in", "out"
 LOW, HIGH = 0, 1
 
 
-class GPIOPin(object):
-    def __init__(self, pin, direction=None, initial=LOW, active_low=None):
-        if ready_pin := GPIOPin.configured(pin):
-            return ready_pin
+def singleton_by_pin(cls):
+    instances = {}
 
+    def get_instance(pin, *args, **kwargs):
+        if pin not in instances:
+            instances[pin] = cls(pin, *args, **kwargs)
+        return instances[pin]
+
+    return get_instance
+
+
+@singleton_by_pin
+class GPIOPin:
+    def __init__(self, pin, direction=None, initial=LOW, active_low=None):
         self.value = None
         self.pin = int(pin)
         self.root = os.path.join(GPIO_ROOT, "gpio{0}".format(self.pin))
@@ -32,8 +40,6 @@ class GPIOPin(object):
         self.value = open(os.path.join(self.root, "value"), "wb+", buffering=0)
 
         self.setup(direction, initial, active_low)
-
-        _open_pins[self.pin] = self
 
     def setup(self, direction=None, initial=LOW, active_low=None):
         if direction is not None:
