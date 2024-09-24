@@ -49,6 +49,7 @@ python-socketio==5.11.4
 PyYAML==6.0.2
 requests==2.32.3
 rich==13.8.1
+RPi.GPIO==0.7.1
 setuptools==72.1.0
 shellingham==1.5.4
 simple-websocket==1.0.0
