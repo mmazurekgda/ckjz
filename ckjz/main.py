@@ -44,7 +44,9 @@ async def monitor_status(websocket: WebSocket):
         result = session.exec(statement).all()
         statuses = {}
         for name, accessible, watchdog in result:
-            if not watchdog or datetime.datetime.now() - watchdog > datetime.timedelta(seconds=TIME_DELTA_WATCHDOG):
+            if not watchdog or datetime.datetime.now() - watchdog > datetime.timedelta(
+                seconds=TIME_DELTA_WATCHDOG
+            ):
                 status = WS_STATUSES.unknown
             else:
                 status = WS_STATUSES.free if accessible else WS_STATUSES.occupied
@@ -55,14 +57,13 @@ async def monitor_status(websocket: WebSocket):
 
 app.include_router(api_router)
 
-static_dir = os.path.join(os.path.dirname(__file__), 'static')
+static_dir = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 ui.run_with(
     app,
-    mount_path='/',
-    storage_secret='pick your private secret here',
+    mount_path="/",
+    storage_secret="pick your private secret here",
     tailwind=True,
     title="CKJZ",
 )
-

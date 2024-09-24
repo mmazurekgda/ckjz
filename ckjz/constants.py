@@ -56,14 +56,15 @@ TOILETS = {
 COLORS = {
     "free": "rgba(84, 184, 72, 1.0)",
     "occupied": "rgba(255, 0, 0, 1.0)",
-    "unknown": "rgba(150, 150, 150, 1.0)"
+    "unknown": "rgba(150, 150, 150, 1.0)",
 }
 
 FAINT_COLORS = {
     "free": "rgba(84, 184, 72, 0.5)",
     "occupied": "rgba(255, 0, 0, 0.5)",
-    "unknown": "rgba(70, 70, 70, 0.5)"
+    "unknown": "rgba(70, 70, 70, 0.5)",
 }
+
 
 class WS_STATUSES(enum.Enum):
     occupied = "occupied"

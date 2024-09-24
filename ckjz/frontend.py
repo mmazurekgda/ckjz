@@ -30,7 +30,8 @@ ws.onmessage = function(event) {{
 </script>
 """
 
-HTML_CODE = """
+HTML_CODE = (
+    """
 <style>
 @font-face {
     font-family: 'Millunium_medium';
@@ -38,18 +39,34 @@ HTML_CODE = """
 }
 body { background-color: #182752; }
 </style>
-""" + JS_SCRIPT
+"""
+    + JS_SCRIPT
+)
 
-TEXT_STYLE = 'font-family: Millunium_medium; color: #54b848;'
-ROW_STYLE = 'margin: auto; width: 100%;'
-COLUMN_STYLE = 'flex: 1; margin: auto; width: 100%; margin-left: 2%; margin-right: 2%;'
+TEXT_STYLE = "font-family: Millunium_medium; color: #54b848;"
+ROW_STYLE = "margin: auto; width: 100%;"
+COLUMN_STYLE = "flex: 1; margin: auto; width: 100%; margin-left: 2%; margin-right: 2%;"
 
 ORIGIN = (-28, 0)
 POLYGON_U_COORDINDATES = {
-    TOILET_TYPE.UL2: [[0.0, 0.0], [56.0, 0.0], [56.0, 58.0], [43.0, 58.0], [43.0, 68.0], [0.0, 68.0]],
+    TOILET_TYPE.UL2: [
+        [0.0, 0.0],
+        [56.0, 0.0],
+        [56.0, 58.0],
+        [43.0, 58.0],
+        [43.0, 68.0],
+        [0.0, 68.0],
+    ],
     TOILET_TYPE.UM2: [[56.0, 0.0], [92.0, 0.0], [92.0, 58.0], [56.0, 58.0]],
     TOILET_TYPE.UL1: [[92.0, 0.0], [132.0, 0.0], [132.0, 58.0], [92.0, 58.0]],
-    TOILET_TYPE.UM1: [[0.0, 68.0], [43.0, 68.0], [43.0, 58.0], [78.0, 58.0], [78.0, 86.0], [0.0, 86.0]],
+    TOILET_TYPE.UM1: [
+        [0.0, 68.0],
+        [43.0, 68.0],
+        [43.0, 58.0],
+        [78.0, 58.0],
+        [78.0, 86.0],
+        [0.0, 86.0],
+    ],
 }
 POLYGON_G_COORDINDATES = {
     TOILET_TYPE.GL: [[15.0, 3.0], [49.0, 3.0], [49.0, 56.0], [15.0, 56.0]],
@@ -64,15 +81,20 @@ SHAPES_CENTROIDS = {
     TOILET_TYPE.GM: [66.5, 25.0],
 }
 
+
 def u_coordinates_to_str(coordinates: list[list[float]]) -> str:
-    return ' '.join([f'{c[0] + ORIGIN[0]},{c[1]}' for c in coordinates])
+    return " ".join([f"{c[0] + ORIGIN[0]},{c[1]}" for c in coordinates])
+
 
 def g_coordinates_to_str(coordinates: list[list[float]]) -> str:
-    return ' '.join([f'{c[0]},{c[1]}' for c in coordinates])
+    return " ".join([f"{c[0]},{c[1]}" for c in coordinates])
+
 
 def get_shape(name: TOILET_TYPE) -> str:
-    style = 'fill: rgba(230, 230, 230, 0.0); stroke: green; stroke-width: 1.2;'
-    x: float = SHAPES_CENTROIDS[name][0] + (ORIGIN[0] if name in POLYGON_U_COORDINDATES else 0)
+    style = "fill: rgba(230, 230, 230, 0.0); stroke: green; stroke-width: 1.2;"
+    x: float = SHAPES_CENTROIDS[name][0] + (
+        ORIGIN[0] if name in POLYGON_U_COORDINDATES else 0
+    )
     y: float = SHAPES_CENTROIDS[name][1]
     if name in [TOILET_TYPE.UL2, TOILET_TYPE.UL1, TOILET_TYPE.GL]:
         # draw a circle
@@ -86,31 +108,34 @@ def get_shape(name: TOILET_TYPE) -> str:
         return (
             f'<polygon id="shape-{name.value}" '
             f'points="{traingle_top[0]},{traingle_top[1]} '
-            f'{traingle_left[0]},{traingle_left[1]} '
+            f"{traingle_left[0]},{traingle_left[1]} "
             f'{traingle_right[0]},{traingle_right[1]}" '
             f'style="{style}" />'
         )
 
 
-@ui.page('/')
+@ui.page("/")
 def show():
     ui.add_head_html(HTML_CODE)
-    with ui.row().style('margin: auto; margin-top: 2%; margin-bottom: 4%;'):
-        ui.label('Is the kibel occupied?').classes('text-9xl').style(TEXT_STYLE)
+    with ui.row().style("margin: auto; margin-top: 2%; margin-bottom: 4%;"):
+        ui.label("Is the kibel occupied?").classes("text-9xl").style(TEXT_STYLE)
     with ui.row().style(ROW_STYLE):
-        with ui.column().classes('items-center').style(COLUMN_STYLE):
-            ui.label('Ground floor').classes('text-8xl').style(TEXT_STYLE)
-        with ui.column().classes('items-center').style(COLUMN_STYLE):
-            ui.label('First floor').classes('text-8xl').style(TEXT_STYLE)
+        with ui.column().classes("items-center").style(COLUMN_STYLE):
+            ui.label("Ground floor").classes("text-8xl").style(TEXT_STYLE)
+        with ui.column().classes("items-center").style(COLUMN_STYLE):
+            ui.label("First floor").classes("text-8xl").style(TEXT_STYLE)
 
     with ui.row().style(ROW_STYLE):
         for image, coordinates_set in [
-            ('/static/downstairs.svg', POLYGON_G_COORDINDATES),
-            ('/static/upstairs.svg', POLYGON_U_COORDINDATES),
+            ("/static/downstairs.svg", POLYGON_G_COORDINDATES),
+            ("/static/upstairs.svg", POLYGON_U_COORDINDATES),
         ]:
-            callback = u_coordinates_to_str if "upstairs" in image else g_coordinates_to_str
-            with ui.column().classes('items-center').style(COLUMN_STYLE):
-                ui.html(f'''
+            callback = (
+                u_coordinates_to_str if "upstairs" in image else g_coordinates_to_str
+            )
+            with ui.column().classes("items-center").style(COLUMN_STYLE):
+                ui.html(
+                    f"""
                     <div style="position: relative; display: inline-block;">
                         <img src="{image}" style="max-width: 100%; position: relative; z-index: 1;">
                         <svg viewBox="0 0 100 100" width="100%" height="100%" style="position: absolute; top: 0; left: 0; z-index: -1;">
@@ -125,9 +150,10 @@ def show():
                         }
                         '</svg>'
                     </div>
-                ''')
-    with ui.row().style('margin-left: auto; width: 10%; margin-top: 4%;'):
-        ui.label('Legend').classes('text-5xl').style(TEXT_STYLE)
+                """
+                )
+    with ui.row().style("margin-left: auto; width: 10%; margin-top: 4%;"):
+        ui.label("Legend").classes("text-5xl").style(TEXT_STYLE)
     for status, color in COLORS.items():
-        with ui.row().style('margin-left: auto; width: 10%;'):
-            ui.label(status).style(f'color: {color}; font-size: 2em;')
+        with ui.row().style("margin-left: auto; width: 10%;"):
+            ui.label(status).style(f"color: {color}; font-size: 2em;")

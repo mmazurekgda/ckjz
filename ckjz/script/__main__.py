@@ -8,10 +8,10 @@ from ckjz.gpio import GPIOPin, IN
 
 
 def update(name: str, status: bool, ip: str, port: int):
-    url = f'http://{ip}:{port}/toilets/{name}'
+    url = f"http://{ip}:{port}/toilets/{name}"
     response = requests.post(
         url,
-        params={'status': status},
+        params={"status": status},
         headers={"accept": "application/json"},
     )
     return response.json()
@@ -24,7 +24,7 @@ def add_toilet_type_options(function):
             default=None,
             type=int,
             required=False,
-            help=f"GPIO pin number for {toilet_type.value}"
+            help=f"GPIO pin number for {toilet_type.value}",
         )(function)
     return function
 
@@ -35,9 +35,9 @@ def cli():
 
 
 @click.command()
-@click.option('--ip', default='localhost', help='IP address of the server')
-@click.option('--port', default=3000, help='Port of the server')
-@click.option('--interval', default=1, help='Interval between updates')
+@click.option("--ip", default="localhost", help="IP address of the server")
+@click.option("--port", default=3000, help="Port of the server")
+@click.option("--interval", default=1, help="Interval between updates")
 def test(ip, port, interval, **kwargs):
     logger = logging.getLogger(__name__)
     logger.info(f"Starting test with interval {interval}")
@@ -51,9 +51,9 @@ def test(ip, port, interval, **kwargs):
 
 
 @click.command()
-@click.option('--ip', default='localhost', help='IP address of the server')
-@click.option('--port', default=3000, help='Port of the server')
-@click.option('--interval', default=1, help='Interval between updates')
+@click.option("--ip", default="localhost", help="IP address of the server")
+@click.option("--port", default=3000, help="Port of the server")
+@click.option("--interval", default=1, help="Interval between updates")
 @add_toilet_type_options
 def run(ip, port, interval, **kwargs):
     logger = logging.getLogger(__name__)
@@ -77,5 +77,5 @@ def run(ip, port, interval, **kwargs):
 cli.add_command(test)
 cli.add_command(run)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()
