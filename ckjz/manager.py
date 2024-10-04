@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import WebSocket
+from starlette.websockets import WebSocketState
 
 
 class ConnectionManager:
@@ -17,8 +18,11 @@ class ConnectionManager:
         await websocket.send_text(message)
 
     async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
+        for index, connection in enumerate(self.active_connections):
+            if not connection.application_state == WebSocketState.CONNECTED:
+                del self.active_connections[index]
+            else:
+                await connection.send_text(message)
 
 
 manager = ConnectionManager()

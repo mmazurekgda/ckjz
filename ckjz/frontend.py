@@ -27,6 +27,16 @@ ws.onmessage = function(event) {{
         }}
     }}
 }};
+
+function sendMessage() {{
+    ws.send("");  // Sends an empty message to trigger the status update
+}}
+
+// Automatically call sendMessage every 3 seconds in a loop
+setInterval(function() {{
+    sendMessage();
+}}, 2000);  // 3000 ms = 3 seconds
+
 </script>
 """
 

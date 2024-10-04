@@ -46,8 +46,11 @@ def test(ip, port, interval, **kwargs):
             time.sleep(interval)
             logger.info(f"Updating `{name}`")
             status = random.choice([True, False])
-            update(name.value, status, ip, port)
-            logger.info(f"Updated `{name}` with status `{status}`")
+            try:
+                update(name.value, status, ip, port)
+                logger.info(f"Updated `{name}` with status `{status}`")
+            except Exception:
+                logger.warning("Failed to connect!") 
 
 
 @click.command()
@@ -74,8 +77,11 @@ def run(ip, port, interval, **kwargs):
             logger.info(f"Reading pin `{pin}` for `{name}`")
             status = GPIO.input(pin)
             logger.info(f"Updating `{name}` with status `{status}`")
-            update(name, status, ip, port)
-            logger.info(f"Updated `{name}` with status `{status}`")
+            try:
+                update(name, status, ip, port)
+                logger.info(f"Updated `{name}` with status `{status}`")
+            except Exception:
+                logger.warning("Failed to connect!") 
         logger.info(f"Sleeping for {interval} seconds")
         time.sleep(interval)
 

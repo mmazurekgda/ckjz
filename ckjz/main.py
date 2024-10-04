@@ -4,7 +4,9 @@ import json
 import datetime
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
-
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.websockets import WebSocketState
+from starlette.websockets import WebSocketDisconnect
 from sqlmodel import Session, select
 from ckjz.models.toilet import Toilet
 from ckjz.engine import engine
@@ -21,6 +23,14 @@ app = FastAPI(
     version=__version__,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/healthz")
 def healthz():
@@ -29,13 +39,19 @@ def healthz():
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            await monitor_status(websocket)
-            await asyncio.sleep(TIME_DELTA_UPDATES)
-    except WebSocketDisconnect:
-        await websocket.close()
+    await websocket.accept()
+    while True:
+        await websocket.receive_text()
+        await monitor_status(websocket)
+    #await manager.connect(websocket)
+    #try:
+    #    while True:
+    #        print(f"Connections: {len(manager.active_connections)}")
+    #        await monitor_status(websocket)
+    #        await asyncio.sleep(TIME_DELTA_UPDATES)
+    #except WebSocketDisconnect:
+    #    print("Closing connection")
+    #    await websocket.close()
 
 
 async def monitor_status(websocket: WebSocket):
@@ -52,7 +68,7 @@ async def monitor_status(websocket: WebSocket):
                 status = WS_STATUSES.free if accessible else WS_STATUSES.occupied
             statuses[name] = status.name
 
-        await manager.broadcast(json.dumps(statuses))
+        await websocket.send_text(json.dumps(statuses))
 
 
 app.include_router(api_router)
