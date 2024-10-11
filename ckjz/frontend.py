@@ -48,6 +48,20 @@ HTML_CODE = (
     src: url('/static/millunium_medium.woff') format('woff');
 }
 body { background-color: #182752; }
+
+/* hide on small screens */
+@media only screen and (max-height: 800px) {
+  .hidden-below-height {
+      display: none !important;
+  }
+}
+@media only screen and (min-height: 800px) {
+  .hidden-above-height {
+      display: none !important;
+  }
+}
+
+
 </style>
 """
     + JS_SCRIPT
@@ -55,7 +69,7 @@ body { background-color: #182752; }
 
 TEXT_STYLE = "font-family: Millunium_medium; color: #54b848;"
 ROW_STYLE = "margin: auto; width: 100%;"
-COLUMN_STYLE = "flex: 1; margin: auto; width: 100%; margin-left: 2%; margin-right: 2%;"
+COLUMN_STYLE = "flex: 1; margin: auto; width: 100%; margin-left: 8%; margin-right: 8%;"
 
 ORIGIN = (-28, 0)
 POLYGON_U_COORDINDATES = {
@@ -127,13 +141,13 @@ def get_shape(name: TOILET_TYPE) -> str:
 @ui.page("/")
 def show():
     ui.add_head_html(HTML_CODE)
-    with ui.row().style("margin: auto; margin-top: 2%; margin-bottom: 4%;"):
-        ui.label("Is the kibel occupied?").classes("text-9xl").style(TEXT_STYLE)
+    with ui.row().classes("hidden-below-height").style("margin: auto; margin-top: 2%; margin-bottom: 4%;"):
+        ui.label("Is the kibel occupied?").classes("2xl:text-8xl xl:text-7xl text-6xl").style(TEXT_STYLE)
     with ui.row().style(ROW_STYLE):
         with ui.column().classes("items-center").style(COLUMN_STYLE):
-            ui.label("Ground floor").classes("text-8xl").style(TEXT_STYLE)
+            ui.label("Ground floor").classes("2xl:text-7xl xl:text-6xl text-5xl").style(TEXT_STYLE)
         with ui.column().classes("items-center").style(COLUMN_STYLE):
-            ui.label("First floor").classes("text-8xl").style(TEXT_STYLE)
+            ui.label("First floor").classes("2xl:text-7xl xl:text-6xl text-5xl").style(TEXT_STYLE)
 
     with ui.row().style(ROW_STYLE):
         for image, coordinates_set in [
@@ -162,8 +176,8 @@ def show():
                     </div>
                 """
                 )
-    with ui.row().style("margin-left: auto; width: 10%; margin-top: 4%;"):
-        ui.label("Legend").classes("text-5xl").style(TEXT_STYLE)
+    with ui.row().classes("hidden-below-height").style("margin-left: auto; width: 10%; margin-top: 4%;"):
+        ui.label("Legend").classes("2xl:text-4xl text-3xl").style(TEXT_STYLE)
     for status, color in COLORS.items():
-        with ui.row().style("margin-left: auto; width: 10%;"):
-            ui.label(status).style(f"color: {color}; font-size: 2em;")
+        with ui.row().classes("hidden-below-height").style("margin-left: auto; width: 10%;"):
+            ui.label(status).classes("2xl:text-3xl text-2xl").style(f"color: {color};")
